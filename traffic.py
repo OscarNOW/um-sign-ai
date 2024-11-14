@@ -32,6 +32,7 @@ def main():
     print("main 3")
     # Split data into training and testing sets
     labels = tf.keras.utils.to_categorical(labels)
+    print("labels.shape", labels.shape)
     x_train, x_test, y_train, y_test = train_test_split(
         np.array(images), np.array(labels), test_size=TEST_SIZE
     )

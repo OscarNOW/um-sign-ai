@@ -1,14 +1,14 @@
-print("importing cv2")
+print("importing 1/5 cv2")
 import cv2
-print("importing numpy")
+print("importing 2/5 numpy")
 import numpy as np
-print("importing os and sys")
+print("importing 3/5 os and sys")
 import os
 import sys
-print("importing tensorflow")
+print("importing 4/5 tensorflow")
 import tensorflow as tf
 
-print("importing train_test_split")
+print("importing 5/5 train_test_split")
 from sklearn.model_selection import train_test_split
 
 EPOCHS = 10
@@ -19,17 +19,17 @@ TEST_SIZE = 0.4
 
 
 def main():
-    print("main")
+    print("main 1/7")
 
     # Check command-line arguments
     if len(sys.argv) not in [2, 3]:
         sys.exit("Usage: python traffic.py data_directory [model.h5]")
 
-    print("main 2")
+    print("main 2/7")
     # Get image arrays and labels for all image files
     images, labels = load_data(sys.argv[1])
 
-    print("main 3")
+    print("main 3/7")
     # Split data into training and testing sets
     labels = tf.keras.utils.to_categorical(labels)
     print("labels.shape", labels.shape)
@@ -37,21 +37,21 @@ def main():
         np.array(images), np.array(labels), test_size=TEST_SIZE
     )
 
-    print("main 4")
+    print("main 4/7")
     # Get a compiled neural network
     model = get_model()
 
-    print("main 5")
+    print("main 5/7")
     model.summary()
     
     # Fit model on training data
     model.fit(x_train, y_train, epochs=EPOCHS)
 
-    print("main 6")
+    print("main 6/7")
     # Evaluate neural network performance
     model.evaluate(x_test,  y_test, verbose=2)
 
-    print("main 7")
+    print("main 7/7")
     # Save model to file
     if len(sys.argv) == 3:
         filename = sys.argv[2]
@@ -83,6 +83,7 @@ def load_data(data_dir):
 
     for category in range(NUM_CATEGORIES):
         category_path = os.path.join(data_dir, str(category))
+        print("load img", category, "/", NUM_CATEGORIES)
 
         if not os.path.isdir(category_path):
             continue

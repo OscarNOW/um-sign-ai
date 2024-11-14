@@ -1,9 +1,14 @@
+print("importing cv2")
 import cv2
+print("importing numpy")
 import numpy as np
+print("importing os and sys")
 import os
 import sys
+print("importing tensorflow")
 import tensorflow as tf
 
+print("importing train_test_split")
 from sklearn.model_selection import train_test_split
 
 EPOCHS = 10
@@ -14,29 +19,38 @@ TEST_SIZE = 0.4
 
 
 def main():
+    print("main")
 
     # Check command-line arguments
     if len(sys.argv) not in [2, 3]:
         sys.exit("Usage: python traffic.py data_directory [model.h5]")
 
+    print("main 2")
     # Get image arrays and labels for all image files
     images, labels = load_data(sys.argv[1])
 
+    print("main 3")
     # Split data into training and testing sets
     labels = tf.keras.utils.to_categorical(labels)
     x_train, x_test, y_train, y_test = train_test_split(
         np.array(images), np.array(labels), test_size=TEST_SIZE
     )
 
+    print("main 4")
     # Get a compiled neural network
     model = get_model()
 
+    print("main 5")
+    model.summary()
+    
     # Fit model on training data
     model.fit(x_train, y_train, epochs=EPOCHS)
 
+    print("main 6")
     # Evaluate neural network performance
     model.evaluate(x_test,  y_test, verbose=2)
 
+    print("main 7")
     # Save model to file
     if len(sys.argv) == 3:
         filename = sys.argv[2]

@@ -63,9 +63,26 @@ def load_data(data_dir):
     corresponding `images`.
     """
 
-    
-    
+    images = []
+    labels = []
 
+    for category in range(NUM_CATEGORIES):
+        category_path = os.path.join(data_dir, str(category))
+
+        if not os.path.isdir(category_path):
+            continue
+
+        for file in os.listdir(category_path):
+            file_path = os.path.join(category_path, file)
+
+            image = cv2.imread(file_path)
+            if image is not None:
+                image = cv2.resize(image, (IMG_WIDTH, IMG_HEIGHT))
+                images.append(image)
+                labels.append(category)
+
+    return images, labels
+    
 
 def get_model():
     """

@@ -86,11 +86,56 @@ def load_data(data_dir):
 
 def get_model():
     """
-    Returns a compiled convolutional neural network model. Assume that the
-    `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
-    The output layer should have `NUM_CATEGORIES` units, one for each category.
+    Returns a compiled convolutional neural network model.
+    
+    You may assume that the input to the neural network will be of the shape (IMG_WIDTH, IMG_HEIGHT, 3) (that is, an array representing an image of width IMG_WIDTH, height IMG_HEIGHT, and 3 values for each pixel for red, green, and blue).
+
+    The output layer of the neural network should have NUM_CATEGORIES units, one for each of the traffic sign categories.
+
+    The number of layers and the types of layers you include in between are up to you. You may wish to experiment with:
+        different numbers of convolutional and pooling layers
+        different numbers and sizes of filters for convolutional layers
+        different pool sizes for pooling layers
+        different numbers and sizes of hidden layers
+        dropout
     """
-    raise NotImplementedError
+
+    # Initialize a sequential model
+    model = tf.keras.models.Sequential()
+
+    # First convolutional layer with pooling
+    # This layer detects basic features in the image with filters
+    model.add(tf.keras.layers.Conv2D(
+        32, (3, 3), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
+    ))
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    # Second convolutional layer with pooling
+    # This layer detects more complex patterns
+    model.add(tf.keras.layers.Conv2D(64, (3, 3), activation="relu"))
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    # Add a dropout layer to reduce overfitting
+    model.add(tf.keras.layers.Dropout(0.5))
+
+    # Flatten the output to connect it to the fully connected layers
+    model.add(tf.keras.layers.Flatten())
+
+    # Fully connected (dense) layer for pattern recognition
+    model.add(tf.keras.layers.Dense(128, activation="relu"))
+
+    # Output layer with units for each category
+    # Softmax is used to predict the probability for each category
+    model.add(tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax"))
+
+    # Compile the model with an optimizer, loss function, and evaluation metric
+    model.compile(
+        optimizer="adam",
+        loss="categorical_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    return model
 
 
 if __name__ == "__main__":
